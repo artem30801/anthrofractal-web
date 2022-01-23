@@ -1,0 +1,36 @@
+.accordion-item {
+    background-color: transparent !important;
+    margin-top: 3px;
+}
+
+/* this arrow on the right */
+.accordion-button:after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+    transition: background-image .15s ease-in-out !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000000'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-button:hover::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000000'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-button {
+    color: #f8f9fa !important;
+    background-color: transparent !important;
+    border-top: 1px solid #f8f9fa !important;
+}
+
+.accordion-button:not(.collapsed),
+.accordion-button:hover {
+    color: #000 !important;
+    background-color: #f8f9fa !important;
+    border-radius: calc(0.25rem - 1px) !important;
+}
+
+.accordion-button:focus {
+    border-radius: calc(0.25rem - 1px) !important;
+    box-shadow: 0 0 0 0.25rem rgb(248 249 250 / 50%) !important;
+}
