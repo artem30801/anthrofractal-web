@@ -6,11 +6,3 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 config.wsgi
     environment:
       DJANGO_DEBUG: 0
-
-  db:
-    volumes:
-      - postgres_data_prod:/var/lib/postgresql/data/
-
-volumes:
-  postgres_data_prod:
-

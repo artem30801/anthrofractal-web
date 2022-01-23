@@ -10,10 +10,3 @@ services:
       - .:/home/app/web  # to edit
     environment:
       DJANGO_DEBUG: 1
-
-  db:
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-
-volumes:
-  postgres_data:
