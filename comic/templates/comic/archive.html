@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'styles/accordion.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block archive %}
+<a href="{% url 'comic-archive' %}" class="btn btn-outline-light active">Archive</a>
+{% endblock %}
+
+{% block content %}
+
+{% regroup panels by page as panel_list %}
+
+<div class="row mt-2 mb-2 justify-content-center">
+    <div class="col">
+        <div class="accordion accordion-flush" id="archive_accordion">
+            {% for page, page_panels in panel_list %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-{{ page.number }}">
+                    <button class="accordion-button {% if page.number != last_panel.page.number %}collapsed{% endif %}" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse-{{ page.number }}" aria-expanded="false" aria-controls="collapse-{{ page.number }}">
+                        {{ page.fullname }}{% if page.number == last_panel.page.number %} &lt;{% endif %}
+                    </button>
+                </h2>
+                <div id="collapse-{{ page.number }}" class="accordion-collapse collapse {% if page.number == last_panel.page.number %}show{% endif %}" 
+                aria-labelledby="heading-{{ page.number }}">
+                    <div class="accordion-body ">
+                        <ul class="list-group list-group-flush">
+                            {% for panel in page_panels %}
+                                <a href="{{ panel.get_absolute_url }}" class="list-group-item list-group-item-action">
+                                <span class="link-effect">{{ panel.pagename }}{% if panel.number == last_panel.number %} &lt;{% endif %}</span>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

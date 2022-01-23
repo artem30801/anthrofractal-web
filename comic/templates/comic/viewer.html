@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row mt-2">
+    <!-- Comic panels -->
+    <div class="col">
+        <img src="{{ panel.image.url }}" height=1080 width=1080 title="{{ panel.title }}" alt="{{ panel.alt }}"
+             class="img-fluid"/>
+    </div>
+</div>
+
+<div class="row mt-2 justify-content-center">
+    <!-- Comic controls -->
+    <div class="col">
+        <!-- d-flex justify-content-center -->
+        <div class="btn-group btn-group-lg d-flex" style="max-width: 100%" role="group"
+             aria-label="Comic viewer controls">
+            {% if panel.number == panel.first_number %}
+            <a href="" class="btn btn-outline-info no-border disabled" aria-disabled="true">&lt;&lt;</a>
+            <a href="" class="btn btn-outline-info no-border disabled" aria-disabled="true">&lt;</a>
+            {% else %}
+            <a href="../{{ panel.first_number }}" class=" btn btn-outline-info no-border" data-bs-toggle="tooltip"
+               data-bs-placement="top" data-bs-delay="500" title="First panel">&lt;&lt;</a>
+            <a href="../{{ panel.previous_number }}" class="btn btn-outline-info no-border" data-bs-toggle="tooltip"
+               data-bs-placement="top" data-bs-delay="500" title="Previous panel">&lt;</a>
+            {% endif %}
+
+            {% comment %}
+            <a class="btn btn-outline-info no-border non-interactive text-truncate">{{ panel.fullname }}</a>
+            {% endcomment %}
+            <a tabindex="0" class="btn btn-outline-info no-border text-truncate w-100 popover-dismiss"
+               role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
+               title="{{ panel.page.fullname}}" data-bs-content="{{ panel }}">
+                {{ panel.fullname }}
+            </a>
+
+
+            {% if panel.number == panel.last_number %}
+            <a href="" class="btn btn-outline-info no-border disabled" aria-disabled="true">&gt;</a>
+            <a href="" class="btn btn-outline-info no-border disabled" aria-disabled="true">&gt;&gt;</a>
+            {% else %}
+            <a href="../{{ panel.next_number }}" class="btn btn-outline-info no-border" data-bs-toggle="tooltip"
+               data-bs-placement="top" data-bs-delay="500" title="Next panel">&gt;</a>
+            <a href="../{{ panel.last_number }}" class="btn btn-outline-info no-border" data-bs-toggle="tooltip"
+               data-bs-placement="top" data-bs-delay="500" title="Last panel">&gt;&gt;</a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <!-- Countdown -->
+    <div class="col">
+        <div class="text-info text-center" id="countdown">
+            <nobr>
+                <span data-type="days"></span>
+                <span data-type="hours"></span>
+            </nobr>
+            <nobr>
+                <span data-type="minutes"></span>
+                <span data-type="seconds"></span>
+            </nobr>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Script to init popovers -->
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            trigger: 'focus1'
+        }
+        )
+    })
+</script>
+
+<!-- Script to store our scroll position on exit and save it on page load -->
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo(0, scrollpos);
+            sessionStorage.removeItem('scrollpos');
+        }
+    });
+
+    window.onbeforeunload = function (e) {
+        sessionStorage.setItem('scrollpos', window.scrollY);
+    };
+
+</script>
+
+<script src="{% static 'scripts/timer.js' %}" type="text/javascript"></script>
+<script>
+    CountDownTimer(`{{ panel.next_publish.isoformat|escapejs }}`, 'countdown');
+</script>
+{% endblock %}

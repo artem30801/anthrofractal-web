@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% comment %}
+<!--{% block styles %}-->
+<!--<link href="{% static 'wierd.css' %}" rel="stylesheet" type="text/css">-->
+<!--<style>-->
+<!--    .big {-->
+<!--        font-size: calc(7rem + 5vw);-->
+<!--        margin-bottom: calc(-1.5rem - 1vw);-->
+<!--    }-->
+<!--</style>-->
+
+<!--{% endblock %}-->
+
+<!--&lt;!&ndash;Old (text) version of 404 page&ndash;&gt;-->
+<!--<div class="row mt-2 justify-content-center">-->
+<!--    <div class="col text-center">-->
+<!--        <h1 class="big"><span class="glitch layers">404</span></h1>-->
+<!--        <h3 class="glitch layers">{{ exception }}</h3>-->
+<!--    </div>-->
+<!--</div>-->
+{% endcomment %}
+
+<div class="row mt-2">
+    <!-- 404 static gif users with bad bandwidth gonna hate me -->
+    <div class="col">
+        <img src="{% static 'images/404.gif' %}" height=1080 width=1080 title="{{ exception }}" alt="CONNECTION LOST"
+             class="img-fluid"/>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'scripts/glitch.js' %}" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web:
+    # wait for db to be online and operational
+    # command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/home/app/web  # to edit
+    environment:
+      DJANGO_DEBUG: 1
+
+  db:
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:

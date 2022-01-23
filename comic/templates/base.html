@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{% load static %}
+{% load bootstrap5 %}
+
+<html>
+
+<!-- IF YOU SEARCH FOR CLUES, YOU WILL FIND THEM -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0d0618"/>
+
+    <title>Anthrofractal</title>
+
+    <style>
+        @font-face {
+            font-family: 'OneSize';
+            src: url('{% static 'onesize.ttf' %}');
+            font-weight: bold;
+        }
+    </style>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'styles/base.css' %}" rel="stylesheet" type="text/css">
+    {% block styles %}{% endblock %}
+    <link rel="icon" type="image/png" href="{% static 'icons/favicon32.png' %}"/>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {% bootstrap_messages %}
+
+    <!-- Live search script -->
+    <script>
+        function liveSearchResult(query) {
+            var display = document.getElementById("livesearch");
+            var spinner = document.getElementById("searchstatus");
+
+            if (query.length == 0) {
+                display.innerHTML = "";
+                display.style.border = "0px";
+                display.style.paddingTop = "0px";
+                spinner.style.visibility = "hidden";
+                return;
+            }
+            else {
+                spinner.style.visibility = "visible";
+            }
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    display.innerHTML = this.responseText;
+                    display.style.border = "2px solid rgb(150, 150, 150)";
+                    display.style.paddingTop = "7px";
+                    spinner.style.visibility = "hidden";
+                }
+            }
+            xmlhttp.open("GET", "{% url 'comic-search-live' %}?q=" + query, true);
+            xmlhttp.send();
+        }
+
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+<div class="d-flex min-vh-100 align-items-center">
+    <div class="container overflow-hidden text-white main">
+        <div class="row mt-3">
+            <!-- Main big logo -->
+            <div class="col">
+                <a href="/" class="img-link">
+                    <img src="{% static 'images/main_logo.png' %}" class="img-fluid logo"/>
+                </a>
+            </div>
+        </div>
+        <div class="row mt-1 gy-2 justify-content-between">
+            <!-- Menu and search bar -->
+            <div class="col-auto">
+                {% block archive %}<a href="{% url 'comic-archive' %}"
+                                      class="btn btn-outline-light">Archive</a>{% endblock %}
+            </div>
+            <div class="col-auto">
+                {% block howto %}<a href="{% url 'comic-howto' %}" class="btn btn-outline-light">How to Play</a>{% endblock %}
+            </div>
+            <div class="col col-xxs-auto">
+                <!-- I don't want you to copy-paste your super-secret search URLs ;P -->
+                <form action="{% url 'comic-search-request' %}" method="POST" class="" style="position: relative;"
+                      autocomplete="off">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {% block search-input %}
+                        <input type="text" class="form-control autocomplete" placeholder="Search" autocomplete="off"
+                               onkeyup="liveSearchResult(this.value)" id="q" name="q" value="{{ search_query }}">
+                        {% endblock %}
+                        <div class=" autocomplete-items list-group list-group-flush bg-black" id="livesearch">
+                        </div>
+                        <button type="submit"
+                                class="input-group-text btn-dark btn-search">{% block search-icon %}<img
+                                class="pixel-art" src="{% static 'icons/search.png' %}">{% endblock %}</img></button>
+                    </div>
+                    <span class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"
+                          id="searchstatus"></span>
+
+                </form>
+            </div>
+        </div>
+        <div class="row mt-2 justify-social-bar justify-content-center">
+            <!-- Socials vote links -->
+            <div class="col-auto">
+                {% block social-read %}<span class="social-text">Read + Vote at</span>{% endblock %}
+            </div>
+            <div class="col-auto">
+                <a href="https://anthrofractal.tumblr.com/" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Tumblr"><img src="{% static 'icons/tumblr.png' %}"
+                                                               class="social-icon pixel-art"></a>
+                <a href="https://twitter.com/anthrofractal" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Twitter"><img src="{% static 'icons/twitter.png' %}"
+                                                                class="social-icon pixel-art"></a>
+                <a href="https://www.facebook.com/groups/anthrofractal" class="img-link"
+                   data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook"><img
+                        src="{% static 'icons/facebook.png' %}" class="social-icon pixel-art"></a>
+                <a href="https://www.instagram.com/anthrofractal/" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Instagram"><img src="{% static 'icons/instagram.png' %}"
+                                                                  class="social-icon pixel-art"></a>
+                <a href="https://www.reddit.com/r/ANTHROFRACTAL/" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Reddit"><img src="{% static 'icons/reddit.png' %}"
+                                                               class="social-icon pixel-art"></a>
+            </div>
+        </div>
+        <div class="row mt-2 justify-social-bar justify-content-center">
+            <!-- Paid vote links -->
+            <div class="col-auto">
+                {% block social-donate %}<span class="social-text">Donate + Vote Further at</span>{% endblock %}
+            </div>
+            <div class="col-auto">
+                <a href="https://ko-fi.com/anthrofractal" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Ko-fi"><img src="{% static 'icons/kofi.png' %}"
+                                                              class="social-icon pixel-art"></a>
+                <a href="https://www.patreon.com/ANTHROFRACTAL" class="img-link" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Patreon"><img src="{% static 'icons/patreon.png' %}"
+                                                                class="social-icon pixel-art"></a>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">Website by artem30801</span>
+    </div>
+</footer>
+
+<!-- Script to activate all tooltips (for socials mostly) -->
+<script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+
+</script>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+version: '3.8'
+
+secrets:
+  django_secret_key:
+    file: $SECRETS_DIR/django/key
+  postgres_pass:
+    file: $SECRETS_DIR/django/postgres_pass
+
+services:
+  web:
+    build: .
+    container_name: web
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/media
+    depends_on:
+      - db
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.web.service=web
+      - traefik.http.routers.web.rule=Host(`$DOMAIN_NAME`)
+      - traefik.http.routers.web.entrypoints=websecure
+      - traefik.http.routers.web.tls=true
+      - traefik.http.routers.web.tls.certresolver=$CERT_RESOLVER
+      - traefik.http.services.web.loadbalancer.server.port=8000
+      # Enable auth. Detailed config in authelia config files
+      - traefik.http.routers.web.middlewares=authelia
+    secrets:
+      - django_secret_key
+      - postgres_pass
+    environment:
+      DOMAIN_NAME: $DOMAIN_NAME
+      # Database
+      DB_ENGINE: django.db.backends.postgresql
+      DB_NAME: $POSTGRES_NAME
+      DB_USER: $POSTGRES_USER
+      DB_HOST: db
+      DB_PORT: 5432
+      # Secrets
+      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret_key
+      POSTGRES_PASS_FILE: /run/secrets/postgres_pass
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - 5432
+    secrets:
+      - postgres_pass
+    environment:
+      POSTGRES_DB: $POSTGRES_NAME
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_pass
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U habrpguser -d habrdb" ]
+#      interval: 120s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 10s
+
+  nginx-static:
+    image: nginx:mainline-alpine
+    expose:
+      - 8081
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx-static.service=nginx-static
+      - traefik.http.routers.nginx-static.rule=Host(`$DOMAIN_NAME`)&&(PathPrefix(`/media`) || PathPrefix(`/static`))
+      - traefik.http.routers.nginx-static.entrypoints=websecure
+      - traefik.http.routers.nginx-static.tls=true
+      - traefik.http.routers.nginx-static.tls.certresolver=$CERT_RESOLVER
+      - traefik.http.services.nginx-static.loadbalancer.server.port=8081
+
+volumes:
+  static_volume:
+  media_volume:
+
+networks:
+  default:
+    external: true
+    name: traefik-proxy

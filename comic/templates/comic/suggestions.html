@@ -1,0 +1,15 @@
+{% for suggestion in suggestions %}
+<a href="{{ suggestion.obj.get_absolute_url }}" class="list-group-item list-group-item-action text-truncate">
+    <span class="link-effect text-truncate">{{ suggestion.obj.fullname }}</span>
+
+    {% if suggestion.type == 'tag' %}
+    <span class="badge bg-info float-end">{{ suggestion.obj.count }}
+        panel{% if suggestion.obj.count != 1 %}s{% endif %}
+    </span>
+    {% endif %}
+</a>
+{% empty %}
+<a class="list-group-item list-group-item-action disabled">
+    <span class="link-effect text-truncate">No live matches</span>
+</a>
+{% endfor %}

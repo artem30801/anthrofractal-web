@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block howto %}
+<a href="{% url 'comic-howto' %}" class="btn btn-outline-light active">How to Play</a>
+{% endblock %}
+
+{% block content %}
+<div class="row mt-2 mb-2 justify-content-center">
+    <div class="col">
+        <h2 class="text-center load-animated">How to play ANTHROFRACTAL:</h2>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item load-animated">Every new communication will offer you new choices.</li>
+            <li class="list-group-item load-animated">You will be given 2-4 choices every communication.</li>
+            <li class="list-group-item load-animated">Every new communication will tell you how long you have to make your choice.</li>
+            <li class="list-group-item load-animated">Everyone playing gets the opportunity to choose. Cast your vote, and the option with the most votes will win.</li>
+            <li class="list-group-item load-animated">Cast your vote on the social sites ANTHROFRACTAL updates to.</li>
+            <li class="list-group-item load-animated">You can vote on multiple sites if you desire.</li>
+            <li class="list-group-item load-animated">If you donate via one or more of the donation options available, you can receive more votes, and therefore more influence.</li>
+            <li class="list-group-item load-animated">Your collective influence will determine the story of ANTHROFRACTAL.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'scripts/load_anim.js' %}" type="text/javascript"></script>
+<script>
+    LoadAnimDelay(0.5, 0.5);
+</script>
+{% endblock %}
