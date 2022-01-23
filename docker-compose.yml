@@ -8,7 +8,6 @@ secrets:
 
 services:
   web:
-    build: .
     container_name: web
     restart: unless-stopped
     security_opt:

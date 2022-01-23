@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   web:
+    build: .
     # wait for db to be online and operational
     # command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
     command: python manage.py runserver 0.0.0.0:8000
