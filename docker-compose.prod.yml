@@ -3,6 +3,7 @@ version: '3.8'
 services:
   web:
     image: artem30801/anthrofractal-web:latest
-    command: gunicorn --bind 0.0.0.0:8000 config.wsgi
+#    command: gunicorn --bind 0.0.0.0:8000 config.wsgi
+    command: python manage.py runserver 0.0.0.0:8000
     environment:
-      DJANGO_DEBUG: 0
+      DJANGO_DEBUG: 1
