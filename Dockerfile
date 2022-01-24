@@ -62,4 +62,4 @@ RUN chmod +x $APP_HOME/entrypoint.sh
 USER app
 
 # run entrypoint.sh (wait for db to start and run initial commands)
-ENTRYPOINT ["$APP_HOME/entrypoint.sh"]
+ENTRYPOINT ["/home/app/web/entrypoint.sh"]
