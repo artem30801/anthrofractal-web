@@ -40,6 +40,7 @@ ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
@@ -55,10 +56,10 @@ COPY . $APP_HOME
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
-RUN chmod +x /home/app/web/entrypoint.sh
+RUN chmod +x $APP_HOME/entrypoint.sh
 
 # change to the app user
 USER app
 
 # run entrypoint.sh (wait for db to start and run initial commands)
-ENTRYPOINT ["/home/app/web/entrypoint.sh"]
+ENTRYPOINT ["$APP_HOME/entrypoint.sh"]
