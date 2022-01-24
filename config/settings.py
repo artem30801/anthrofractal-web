@@ -1,20 +1,29 @@
 """Django settings for anthrofractal project."""
 import os
+import logging
 from pathlib import Path
 
 import environ
 
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 env = environ.Env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def get_secret_file(key, default, cast=None):
+def get_secret_file(key, default=None, cast=None):
     value = env.get_value(key, default=default, cast=cast)
     if os.path.isfile(value):
         with open(value) as f:
-            return f.read()
+            value = f.read()
+            logger.info(f"DEBUG PASS `{key}`, `{value}`")
+            return value
+    else:
+        logger.critical("Could not load secret from file!")
+
     return value
 
 
