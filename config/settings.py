@@ -27,13 +27,13 @@ def get_secret_file(key, default=None, cast=None):
     return value
 
 
-SECRET_KEY = get_secret_file("DJANGO_SECRET_KEY_FILE", "")
+SECRET_KEY = get_secret_file("DJANGO_SECRET_KEY_FILE", "INSECURE_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG', default=False)
 
-DOMAIN_NAME = env('DOMAIN_NAME')
+DOMAIN_NAME = env('DOMAIN_NAME', default='anthrofractal.localhost')
 ALLOWED_HOSTS = [DOMAIN_NAME]
 
 
@@ -115,7 +115,7 @@ DATABASES = {
     # 'default': env.db(),
 
     'default': {
-        'ENGINE': env('DB_ENGINE'),
+        'ENGINE': env('DB_ENGINE', default='django.db.backends.postgresql'),
         'NAME': env('DB_NAME', default='store'),
         'USER': env('DB_USER', default='postgres'),
         'PASSWORD': get_secret_file('POSTGRES_PASS_FILE', ''),
