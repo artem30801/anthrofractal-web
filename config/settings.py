@@ -18,7 +18,7 @@ def get_secret_file(key, default=None, cast=None):
     value = env.get_value(key, default=default, cast=cast)
     if os.path.isfile(value):
         with open(value) as f:
-            value = f.read()
+            value = f.read().strip()
             logger.info(f"DEBUG PASS `{key}`, `{value}`")
             return value
     else:
