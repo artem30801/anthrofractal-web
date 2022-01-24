@@ -40,7 +40,10 @@ ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+
+# make directories so they would have right permissions
 RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/media
 
 # install dependencies
 RUN apt-get update && apt-get install -y \
