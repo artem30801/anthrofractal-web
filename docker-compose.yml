@@ -70,6 +70,7 @@ services:
 
   nginx-static:
     image: nginx:mainline-alpine
+    container_name: nginx-static
     expose:
       - 8081
     volumes:
