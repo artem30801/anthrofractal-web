@@ -3,11 +3,7 @@ from django.utils import timezone
 # from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
-from django.db.models.signals import pre_delete
-from django.dispatch.dispatcher import receiver
-
 from tagulous.models import TagField, TagModel
-import tagulous.models
 
 import datetime
 import uuid
