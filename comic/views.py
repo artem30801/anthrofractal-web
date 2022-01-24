@@ -41,7 +41,10 @@ def howto(request):
 
 
 def panel(request, number: int):
-    panel = get_object_or_404(ComicPanel, number=number, published__lte=timezone.now())
+    if request.user.is_staff:  # show unpublished panels for admins
+        panel = get_object_or_404(ComicPanel, number=number)
+    else:
+        panel = get_object_or_404(ComicPanel, number=number, published__lte=timezone.now())
     
     request.session['last_panel'] = panel.number
     context = {'panel': panel}
