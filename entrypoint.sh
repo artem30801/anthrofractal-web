@@ -17,10 +17,6 @@ echo "Re-collecting static files"
 python manage.py collectstatic --noinput --clear
 echo "Static files collected"
 
-echo "Making migrations files"
-python manage.py makemigrations --noinput
-echo "Migration files made"
-
 echo "Executing database migrations"
 python manage.py migrate --noinput
 echo "Migrations executed"
