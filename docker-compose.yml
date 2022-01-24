@@ -5,6 +5,8 @@ secrets:
     file: $SECRETS_DIR/django/key
   postgres_pass:
     file: $SECRETS_DIR/django/postgres_pass
+  test_secret:
+    file: $SECRETS_DIR/django/test
 
 services:
   web:
@@ -85,6 +87,18 @@ services:
       - traefik.http.routers.nginx-static.tls=true
       - traefik.http.routers.nginx-static.tls.certresolver=$CERT_RESOLVER
       - traefik.http.services.nginx-static.loadbalancer.server.port=8081
+
+  test-secrets:
+    image: centos:7
+    entrypoint: "cat /run/secrets/test_secret"
+    secrets:
+      - test_secret
+
+  test-secrets-2:
+    image: centos:7
+    entrypoint: "cat $SECRETS_DIR/django/test"
+    secrets:
+      - test_secret
 
 volumes:
   static_volume:
