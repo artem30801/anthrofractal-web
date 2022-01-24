@@ -29,7 +29,6 @@ pip-delete-this-directory.txt
 
 # Django stuff:
 *.log
-*/migrations/
 
 # Virtual environment
 .env/
