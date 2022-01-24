@@ -70,20 +70,21 @@ services:
 
   nginx-static:
     image: nginx:mainline-alpine
+    command: ["nginx", "-g", "daemon off;", "-c", "/home/app/web/nginx/nginx.conf"]
     container_name: nginx-static
     expose:
       - 8081
     volumes:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
-      - nginx_conf:/etc/nginx
+      - nginx_conf:/home/app/web/nginx
     labels:
       - traefik.enable=true
       - traefik.http.routers.nginx-static.service=nginx-static
       - traefik.http.routers.nginx-static.rule=Host(`$DOMAIN_NAME`)&&(PathPrefix(`/media`) || PathPrefix(`/static`))
       - traefik.http.routers.nginx-static.entrypoints=websecure
-      - traefik.http.routers.nginx-static.tls=true
-      - traefik.http.routers.nginx-static.tls.certresolver=$CERT_RESOLVER
+#      - traefik.http.routers.nginx-static.tls=true
+#      - traefik.http.routers.nginx-static.tls.certresolver=$CERT_RESOLVER
       - traefik.http.services.nginx-static.loadbalancer.server.port=8081
 
 volumes:
