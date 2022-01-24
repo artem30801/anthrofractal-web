@@ -6,7 +6,7 @@ from pathlib import Path
 import environ
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 env = environ.Env()
@@ -19,7 +19,6 @@ def get_secret_file(key, default=None, cast=None):
     if os.path.isfile(value):
         with open(value) as f:
             value = f.read().strip()
-            logger.info(f"DEBUG PASS `{key}`, `{value}`")
             return value
     else:
         logger.critical("Could not load secret from file!")
