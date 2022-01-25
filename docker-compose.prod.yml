@@ -7,3 +7,5 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 config.wsgi
     environment:
       DJANGO_DEBUG: 0
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
