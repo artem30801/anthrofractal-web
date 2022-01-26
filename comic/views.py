@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 # from django.views.decorators.http import require_POST
 from django.core.signing import TimestampSigner, BadSignature
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.cache import add_never_cache_headers
 
 from .models import ComicPanel, SecretPanel, Page
 # from anthrofractal.config import settings
@@ -43,18 +44,25 @@ def howto(request):
 def panel(request, number: int):
     if request.user.is_staff:  # show unpublished panels for admins
         panel = get_object_or_404(ComicPanel, number=number)
+        cache = False
     else:
         panel = get_object_or_404(ComicPanel, number=number, published__lte=timezone.now())
+        cache = True
     
     request.session['last_panel'] = panel.number
     context = {'panel': panel}
-    return render(request, 'comic/viewer.html', context)
+    response = render(request, 'comic/viewer.html', context)
+    if not cache:
+        add_never_cache_headers(response)
+    return response
 
 
 def secret(request, u_id: uuid.UUID):
     panel = get_object_or_404(SecretPanel, id=u_id)
     context = {'panel': panel}
-    return render(request, 'comic/secret.html', context)
+    response = render(request, 'comic/secret.html', context)
+    add_never_cache_headers(response)
+    return response
 
 
 @staff_member_required()
@@ -143,7 +151,6 @@ def live_search(request):
     query = request.GET.get('q')
     suggestions = search_engine(query)
 
-    # suggestions = [text for text, _ in suggestions]
     context = {'suggestions': suggestions}
     return render(request, 'comic/suggestions.html', context)
 
@@ -156,7 +163,6 @@ def search(request):
         if secret is not None:
             signer = TimestampSigner(salt=request.session.session_key)
             signature = signer.sign(secret.id)
-            print(signature)
             return redirect('comic-secret', signature=signature)
 
         response = redirect('comic-search-request')
