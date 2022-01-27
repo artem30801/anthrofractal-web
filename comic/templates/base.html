@@ -2,7 +2,7 @@
 {% load static %}
 {% load bootstrap5 %}
 
-<html>
+<html lang="en">
 
 <!-- IF YOU SEARCH FOR CLUES, YOU WILL FIND THEM -->
 
@@ -89,7 +89,8 @@
                 <!-- Main big logo -->
                 <div class="col">
                     <a href="/" class="img-link">
-                        <img src="{% static 'images/main_logo.png' %}" height=170 width=770 class="img-fluid logo" />
+                        <img src="{% static 'images/main_logo.png' %}" height=170 width=770 class="img-fluid logo"
+                            alt="Anthrofractal logo" />
                     </a>
                 </div>
             </div>
@@ -117,7 +118,8 @@
                             </div>
                             <button type="submit" class="input-group-text btn-dark btn-search">
                                 {% block search-icon %}
-                                <img class="pixel-art" src="{% static 'icons/search.png' %}" height=24 width=24 />
+                                <img class="pixel-art" src="{% static 'icons/search.png' %}" height=24 width=24
+                                    alt="Search button icon" />
                                 {% endblock %}
                             </button>
                         </div>
@@ -135,24 +137,28 @@
                 <div class="col-auto">
                     <a href="https://anthrofractal.tumblr.com/" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Tumblr">
-                        <img src="{% static 'icons/tumblr.png' %}" height=24 width=24 class="social-icon pixel-art" />
+                        <img src="{% static 'icons/tumblr.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Tumblr link icon" />
                     </a>
                     <a href="https://twitter.com/anthrofractal" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Twitter">
-                        <img src="{% static 'icons/twitter.png' %}" height=24 width=24 class="social-icon pixel-art" />
+                        <img src="{% static 'icons/twitter.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Twitter link icon" />
                     </a>
                     <a href="https://www.facebook.com/groups/anthrofractal" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Facebook">
-                        <img src="{% static 'icons/facebook.png' %}" height=24 width=24 class="social-icon pixel-art" />
+                        <img src="{% static 'icons/facebook.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Facebook link icon" />
                     </a>
                     <a href="https://www.instagram.com/anthrofractal/" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Instagram">
-                        <img src="{% static 'icons/instagram.png' %}" height=24 width=24
-                            class="social-icon pixel-art" />
+                        <img src="{% static 'icons/instagram.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Instagram link icon" />
                     </a>
                     <a href="https://www.reddit.com/r/ANTHROFRACTAL/" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Reddit">
-                        <img src="{% static 'icons/reddit.png' %}" height=24 width=24 class="social-icon pixel-art" />
+                        <img src="{% static 'icons/reddit.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Reddit link icon" />
                     </a>
                 </div>
             </div>
@@ -164,11 +170,13 @@
                 <div class="col-auto">
                     <a href="https://ko-fi.com/anthrofractal" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Ko-fi">
-                        <img src="{% static 'icons/kofi.png' %}" height=24 width=24 class="social-icon pixel-art">
+                        <img src="{% static 'icons/kofi.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Ko-fi link icon" />
                     </a>
                     <a href="https://www.patreon.com/ANTHROFRACTAL" class="img-link" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Patreon">
-                        <img src="{% static 'icons/patreon.png' %}" height=24 width=24 class="social-icon pixel-art">
+                        <img src="{% static 'icons/patreon.png' %}" height=24 width=24 class="social-icon pixel-art"
+                            alt="Patreon link icon" />
                     </a>
                 </div>
             </div>
