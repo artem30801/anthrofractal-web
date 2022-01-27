@@ -39,7 +39,7 @@
     {% bootstrap_messages %}
 
     <!-- Live search script -->
-    <script>
+    <script async>
         function liveSearchResult(query) {
             var display = document.getElementById("livesearch");
             var spinner = document.getElementById("searchstatus");
@@ -171,7 +171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <!-- Script to activate all tooltips (for socials mostly) -->
-<script>
+<script async>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
