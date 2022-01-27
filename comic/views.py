@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.core.signing import TimestampSigner, BadSignature
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.cache import add_never_cache_headers
+from django.views.decorators.gzip import gzip_page
 
 from .models import ComicPanel, SecretPanel, Page
 # from anthrofractal.config import settings
@@ -22,11 +23,13 @@ def get_session_last_number(request):
     return last_number
 
 
+@gzip_page
 def index(request):
     last_number = get_session_last_number(request)
     return redirect('comic-panel', number=last_number)
 
 
+@gzip_page
 def archive(request):
     panels = ComicPanel.objects.filter(published__lte=timezone.now())
     last_number = get_session_last_number(request)
@@ -36,11 +39,13 @@ def archive(request):
     return render(request, 'comic/archive.html', context)
 
 
+@gzip_page
 def howto(request):
     context = {}
     return render(request, 'comic/howto.html', context)
 
 
+@gzip_page
 def panel(request, number: int):
     if request.user.is_staff:  # show unpublished panels for admins
         panel = get_object_or_404(ComicPanel, number=number)
@@ -81,6 +86,7 @@ def secret_signed(request, signature):
     return secret(request, u_id)
 
 
+@gzip_page
 def tag(request, slug: str):
     tag = get_object_or_404(ComicPanel.tags.tag_model, slug=slug)
     panels = ComicPanel.objects.filter(tags=tag, published__lte=timezone.now())
