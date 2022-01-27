@@ -37,6 +37,7 @@ body {
     outline-style: none;
     box-shadow: none;
     border-color: transparent;
+    text-decoration: none;
 }
 
 .img-link:focus .logo,
@@ -147,4 +148,5 @@ body {
 .social-icon:focus,
 .social-icon:active {
     filter:
-        drop-shadow(1px 1px 0px #0dcaf0) drop-shadow(0px 0px 0px #0dcaf0) drop-shadow(1px -1px 0px #0dcaf0) drop-shadow(-1px 1px 0px #0DCAF1)}
+        drop-shadow(1px 1px 0px #0dcaf0) drop-shadow(0px 0px 0px #0dcaf0) drop-shadow(1px -1px 0px #0dcaf0) drop-shadow(-1px 1px 0px #0DCAF1)
+}
