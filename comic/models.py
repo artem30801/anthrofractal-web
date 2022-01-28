@@ -21,6 +21,14 @@ class PanelTag(TagModel):
     def fullname(self):
         return f"Tag - {self.name}"
 
+    @property
+    def published_panels(self):
+        return ComicPanel.objects.filter(tags=self).filter(published__lte=timezone.now())
+
+    @property
+    def published_count(self):
+        return self.published_panels.count()
+
 
 class Numbered(models.Model):
     objects = models.Manager()

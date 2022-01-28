@@ -89,7 +89,8 @@ def secret_signed(request, signature):
 @gzip_page
 def tag(request, slug: str):
     tag = get_object_or_404(ComicPanel.tags.tag_model, slug=slug)
-    panels = ComicPanel.objects.filter(tags=tag, published__lte=timezone.now())
+    panels = tag.published_panels
+
     if len(panels) == 1:
         panel = panels[0]
         return redirect('comic-panel', number=panel.number)

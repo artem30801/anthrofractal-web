@@ -3,9 +3,9 @@
     <span class="link-effect text-truncate">{{ suggestion.obj.fullname }}</span>
 
     {% if suggestion.type == 'tag' %}
-    <span class="badge bg-info float-end">{{ suggestion.obj.count }}
-        panel{% if suggestion.obj.count != 1 %}s{% endif %}
-    </span>
+    {% with count=suggestion.obj.published_count %}
+    <span class="badge bg-info float-end">{{ count }}panel{{ count|pluralize }}</span>
+    {% endwith %}
     {% endif %}
 </a>
 {% empty %}
