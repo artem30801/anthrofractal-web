@@ -9,6 +9,13 @@ import datetime
 import uuid
 
 
+def salt_filename(path):
+    def upload_to(instance, filename):
+        salt = uuid.uuid4()
+        return f"{path}/{salt}-{filename}"
+    return upload_to
+
+
 class PanelTag(TagModel):
     class TagMeta:
         force_lowercase = True
@@ -110,7 +117,7 @@ class ComicPanel(Numbered):
     page = models.ForeignKey(Page, related_name='panels',
                              on_delete=models.CASCADE, default=Page.get_default_pk)
 
-    image = models.ImageField(upload_to='panels')
+    image = models.ImageField(upload_to=salt_filename('panels'))
 
     def __str__(self):
         return f"Panel {self.number:02d} - {self.title}"
@@ -163,7 +170,7 @@ class SecretPanel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     published = models.DateTimeField('date published', default=timezone.now)
     key_phrase = models.CharField(max_length=500)
-    image = models.ImageField(upload_to='secrets')
+    image = models.ImageField(upload_to=salt_filename('secrets'))
 
     archive_text = models.CharField(max_length=200, blank=True, help_text="Overrides 'Archive' button glitching text")
     howto_text = models.CharField(max_length=200, blank=True, help_text="Overrides 'How to Play' button glitching text")
