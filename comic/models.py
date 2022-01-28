@@ -12,7 +12,7 @@ import uuid
 def salt_filename(path):
     def upload_to(instance, filename):
         salt = uuid.uuid4()
-        return f"{path}/{salt}-{filename}"
+        return f"{path}/{salt}_{filename}".replace("-", "_")
     return upload_to
 
 
