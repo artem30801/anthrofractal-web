@@ -185,7 +185,7 @@ def search(request):
             suggestion_type = suggestion['type']
             if suggestion_type == 'tag':
                 tag = suggestion['obj']
-                for panel in ComicPanel.objects.filter(tags=tag.pk):
+                for panel in tag.published_panels:
                     if panel not in to_show:
                         to_show.append(panel)
             elif suggestion_type == 'panel':
