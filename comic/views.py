@@ -145,7 +145,7 @@ def search_engine(query, score_cutoff=80, scorer=fuzz.WRatio):
 def search_secret(query, score_cutoff=80, scorer=fuzz.ratio):
     """Returns SecretPanel obj or None depending on match"""
     # score_cutoff = 85 for stricter
-    secrets = SecretPanel.objects.all()
+    secrets = SecretPanel.objects.filter(published__lte=timezone.now())
 
     secrets_dict = {secrets: secrets.key_phrase for secrets in secrets}
     result = process.extractOne(query, secrets_dict, score_cutoff=score_cutoff, scorer=scorer)
