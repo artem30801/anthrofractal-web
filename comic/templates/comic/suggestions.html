@@ -4,7 +4,7 @@
 
     {% if suggestion.type == 'tag' %}
     {% with count=suggestion.obj.published_count %}
-    <span class="badge bg-info float-end">{{ count }}panel{{ count|pluralize }}</span>
+    <span class="badge bg-info float-end">{{ count }} panel{{ count|pluralize }}</span>
     {% endwith %}
     {% endif %}
 </a>
