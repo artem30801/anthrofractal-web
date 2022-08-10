@@ -164,8 +164,11 @@ def live_search(request):
 
 @csrf_protect
 def search(request):
+    # when user sends the search form
     if request.method == 'POST':
         query = request.POST.get('q')
+
+        # Check query for key-phrase, redirect to signed secrets page
         secret = search_secret(query)
         if secret is not None:
             signer = TimestampSigner(salt=request.session.session_key)
@@ -176,31 +179,42 @@ def search(request):
         response['Location'] += f'?q={query}'
         return response
 
+    # when search form redirects user to actual search results page or when direct link is used
     if request.method == 'GET':
         query = request.GET.get('q')
         suggestions = search_engine(query)
 
         to_show = list()
+
+        def suggest_panel(panel):
+            if panel not in to_show:
+                to_show.append(panel)
+
         for suggestion in suggestions:
             suggestion_type = suggestion['type']
+            obj = suggestion['obj']
             if suggestion_type == 'tag':
-                tag = suggestion['obj']
-                for panel in tag.published_panels:
-                    if panel not in to_show:
-                        to_show.append(panel)
+                # If results consist of only one tag, redirect to tag gallery webpage
+                if len(suggestions) == 1:
+                    return redirect('comic-search-tag', slug=obj.slug)
+                for panel in obj.published_panels:
+                    suggest_panel(panel)
             elif suggestion_type == 'panel':
-                panel = suggestion['obj']
-                if panel not in to_show:
-                    to_show.append(panel)
+                # If results consist of only one panel, redirect to panel webpage
+                if len(suggestions) == 1:
+                    return redirect('comic-panel', number=obj.number)
+                suggest_panel(obj)
             elif suggestion_type == 'page':
-                page = suggestion['obj']
-                panel = page.panels.order_by('number').first()
-                if panel not in to_show:
-                    to_show.append(panel)
+                panel = obj.panels.order_by('number').first()
+                # If results consist of only one page, redirect to first panel of that page
+                if len(suggestions) == 1:
+                    return redirect('comic-panel', number=panel.number)
 
+                suggest_panel(panel)
+
+        to_show = list(dict.fromkeys(to_show))
         results_num = len(to_show)
-        # print(suggestions)
-        # print(to_show)
+
         context = {'panels': to_show,
                    'query': query,
                    'results_num': results_num,
