@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-# from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
 from tagulous.models import TagField, TagModel
@@ -75,7 +74,6 @@ class Numbered(models.Model):
                 self.number = 1
             else:
                 self.number = last_number + 1
-
         super().save(*args, **kwargs)
 
 
@@ -145,7 +143,8 @@ class ComicPanel(Numbered):
 
     @classmethod
     def _last_number_private(cls):
-        return super()._last_number_private()
+        max_number = cls.objects.aggregate(models.Max('number'))['number__max']
+        return max_number
 
     @classmethod
     def next_publish(cls):
