@@ -2,11 +2,11 @@ from django.http import Http404
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
-# from django.views.decorators.http import require_POST
 from django.core.signing import TimestampSigner, BadSignature
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.cache import add_never_cache_headers
 from django.views.decorators.gzip import gzip_page
+from django.contrib.syndication.views import Feed
 
 from .models import ComicPanel, SecretPanel, Page
 # from anthrofractal.config import settings
@@ -138,7 +138,6 @@ def search_engine(query, score_cutoff=80, scorer=fuzz.WRatio):
 
     # ensure only unique objects are shown (if there are several matches for the same object)
     suggestions = list(reversed({value['obj']: value for value in reversed(suggestions)}.values()))
-
     return suggestions
 
 
@@ -223,3 +222,32 @@ def search(request):
 
     raise Http404("??????")
 
+
+class ComicPanelsFeed(Feed):
+    title = "Anthrofractal comic panel feed"
+    link = "/feed/"
+    description = "Updates with new comic panels of Anthrofractal. Link leads to panel on the website"
+
+    def items(self):
+        return ComicPanel.objects.filter(published__lte=timezone.now()).order_by('-number')[:20]
+
+    def item_title(self, item: ComicPanel):
+        return item.title
+
+    def item_description(self, item: ComicPanel):
+        return item.alt
+
+    def item_pubdate(self, item: ComicPanel):
+        return item.published
+
+    def item_categories(self, item: ComicPanel):
+        return item.tags.all()
+
+
+class ComicImagesFeed(ComicPanelsFeed):
+    title = "Anthrofractal comic panel images feed"
+    link = "/image_feed/"
+    description = "Updates with new comic panels of Anthrofractal. Link leads to panel image"
+
+    def item_link(self, item: ComicPanel):
+        return item.image.url
