@@ -72,6 +72,7 @@ services:
     image: nginx:mainline-alpine
     command: ["nginx", "-g", "daemon off;", "-c", "/home/app/web/nginx/nginx.conf"]
     container_name: nginx-static
+    restart: unless-stopped
     expose:
       - 8081
     depends_on:
