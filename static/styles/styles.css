@@ -149,5 +149,5 @@
 .load-animated {
     /* opacity: 0; */
     /* animation-fill-mode: both; */
-    animation: 1.5s load ease-in both;
+    animation: 0.75s load ease-in both;
 }
