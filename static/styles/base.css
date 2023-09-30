@@ -150,3 +150,8 @@ body {
     filter:
         drop-shadow(1px 1px 0px #0dcaf0) drop-shadow(0px 0px 0px #0dcaf0) drop-shadow(1px -1px 0px #0dcaf0) drop-shadow(-1px 1px 0px #0DCAF1)
 }
+
+.text-credits{
+    font-size: 0.75rem;
+    text-align: center;
+}
